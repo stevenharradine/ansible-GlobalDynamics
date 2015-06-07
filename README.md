@@ -1,2 +1,2 @@
 # ansible-SARAH
-Ansible script to build GlobalDynamics from the ground up
+Ansible script to build SARAH framework from the ground up
