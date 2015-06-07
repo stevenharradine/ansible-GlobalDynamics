@@ -2,15 +2,23 @@
   vars:
     http_port: 80
     max_clients: 200
+    default_database_root_password: "^SD[/u\va5*3RnHU"
+    database_username: douglas
+    database_password: fargo
   sudo: true
   remote_user: douglas
 
   tasks:
-  - name: install software
+  - name: install software | apt
     apt:
       pkg: "{{ item }}"
       state: latest
     with_items:
+      - htop
+      - git
+      - ruby-sass
+      - nodejs
+      - npm
       - apache2
       - php5
       - mysql-server
@@ -18,22 +26,89 @@
       - php5-mysql
       - libapache2-mod-php5
 
+  - name: install software | npm
+    npm:
+      name: "{{ item }}"
+      state: latest
+      global: yes
+    with_items:
+      - grunt
+      - grunt-cli
 
-#  - name: write the apache config file
-#    template:
-#      src: /srv/httpd.j2
-#      dest: /etc/httpd.conf
-#    notify:
-#    - restart apache
+  - name: checkout framework
+    git:
+      repo: https://github.com/stevenharradine/SARAH-framework.git
+      dest: /etc/SARAH/
+      version: master
+      force: yes
 
-#  - name: ensure apache is running (and enable it at boot)
-#    service:
-#      name: httpd
-#      state: started
-#      enabled: yes
+  - name: change framework permissions
+    file:
+      path: /etc/SARAH
+      state: directory
+      recurse: yes
+      owner: www-data
+      group: www-data
+      mode: 0755
 
-#  handlers:
-#  - name: restart apache
-#    service:
-#      name: httpd
-#      state: restarted
+  - name: add media.conf and sarah.conf to apache2.conf
+    lineinfile:
+      dest: /etc/apache2/apache2.conf
+      insertafter: EOF
+      line: "Include /etc/SARAH/apache2/{{ item }}.conf"
+    with_items:
+      - sarah
+      - media
+    notify:
+      - restart apache
+
+  - name: restart apache
+    service:
+      name: apache2
+      state: restarted
+
+  - name: set root password
+    mysql_user:
+      login_user: root
+      login_password: ""
+      name: root
+      password: "{{ default_database_root_password }}"
+    ignore_errors: yes
+
+  - name: create sarah user account
+    mysql_user:
+      login_user: root
+      login_password: "{{ default_database_root_password }}"
+      name: "{{ database_username }}"
+      password: "{{ database_password }}"
+      priv: "*.*:ALL,GRANT"
+
+  - name: symlink node
+    file:
+      src: /usr/bin/nodejs
+      dest: /usr/bin/node
+      owner: www-data
+      group: www-data
+      state: link
+
+  - name: install npm via package.json
+    sudo_user: root
+    npm:
+      path: /etc/SARAH
+
+  - name: update apps
+    sudo_user: root
+    command: node /etc/SARAH/scripts/setup-apps.js
+    tags:
+      - deploy
+
+  - name: initalize database
+    command: curl 127.0.0.1/SARAH/init/db.php
+    tags:
+      - deploy
+
+  handlers:
+  - name: restart apache
+    service:
+      name: apache2
+      state: restarted
