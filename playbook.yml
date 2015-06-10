@@ -26,6 +26,7 @@
       - python-mysqldb
       - php5-mysql
       - libapache2-mod-php5
+      - openjdk-7-jdk
 
   - name: enable mcrypt
     command: php5enmod mcrypt
@@ -110,6 +111,18 @@
     command: curl 127.0.0.1/SARAH/init/db.php
     tags:
       - deploy
+
+  - name: compile reader updater
+    sudo_user: www-data
+#    command: bash /etc/SARAH/www/apps/SARAH-reader/updater/compile.sh
+    command: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ && bash compile.sh"
+
+  - name: reader | cron
+    sudo_user: www-data
+    cron:
+      name: "Reader updater"
+      special_time: reboot
+      job: /bin/bash /etc/SARAH/www/apps/SARAH-reader/updater/run.sh
 
   handlers:
   - name: restart apache
