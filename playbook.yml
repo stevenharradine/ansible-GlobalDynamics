@@ -1,7 +1,5 @@
 - hosts: globaldynamics
   vars:
-    http_port: 80
-    max_clients: 200
     default_database_root_password: "^SD[/u\va5*3RnHU"
     database_username: douglas
     database_password: fargo
