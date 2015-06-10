@@ -1,4 +1,4 @@
-- hosts: globaldynamics
+- hosts: SARAH
   vars:
     default_database_root_password: "^SD[/u\va5*3RnHU"
     database_username: douglas
@@ -113,14 +113,14 @@
   - name: compile reader updater
     sudo_user: www-data
 #    command: bash /etc/SARAH/www/apps/SARAH-reader/updater/compile.sh
-    command: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ && bash compile.sh"
+    shell: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ && bash compile.sh"
 
   - name: reader | cron
     sudo_user: www-data
     cron:
       name: "Reader updater"
       special_time: reboot
-      job: /bin/bash /etc/SARAH/www/apps/SARAH-reader/updater/run.sh
+      job: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ &&  bash run.sh"
 
   handlers:
   - name: restart apache
