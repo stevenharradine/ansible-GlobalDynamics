@@ -11,6 +11,7 @@
     apt:
       pkg: "{{ item }}"
       state: latest
+      update_cache: yes
     with_items:
       - htop
       - git
@@ -103,11 +104,6 @@
   - name: update apps
     sudo_user: root
     command: node /etc/SARAH/scripts/setup-apps.js
-    tags:
-      - deploy
-
-  - name: initalize database
-    command: curl 127.0.0.1/SARAH/init/db.php
     tags:
       - deploy
 
