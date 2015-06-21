@@ -108,20 +108,12 @@
     tags:
       - deploy
 
-  - name: compile reader updater
-    sudo_user: www-data
-    shell: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ && bash compile.sh"
-
   - name: reader | cron
     sudo_user: www-data
     cron:
       name: "Reader updater"
       special_time: reboot
       job: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ &&  bash run.sh"
-
-  - name: compile media updater
-    sudo_user: www-data
-    shell: "cd /etc/SARAH/www/apps/SARAH-media/updater/ && bash compile.sh"
 
   # - name: reader | cron
   #   sudo_user: www-data
