@@ -1,11 +1,11 @@
+---
 - hosts: SARAH
-  vars:
-    default_database_root_password: "^SD[/u\va5*3RnHU"
-    database_username: douglas
-    database_password: fargo
   sudo: true
   remote_user: douglas
-
+  vars:
+    default_database_root_password: "fargo"
+    database_username: douglas
+    database_password: fargo
   tasks:
   - name: install software | apt
     apt:
@@ -27,6 +27,7 @@
       - libapache2-mod-php5
       - openjdk-7-jdk
       - libav-tools
+      - php5-curl
 
   - name: enable mcrypt
     command: php5enmod mcrypt
@@ -128,7 +129,6 @@
   #     name: "Reader updater"
   #     special_time: reboot
   #     job: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ &&  bash run.sh"
-
   handlers:
   - name: restart apache
     service:
