@@ -78,6 +78,14 @@
     notify:
       - restart apache
 
+  - name: update php session timeout
+    lineinfile:
+      dest: /etc/php5/apache2/php.ini
+      regexp: ^session.gc_maxlifetime
+      line: session.gc_maxlifetime = 172800
+    notify:
+      - restart apache
+
   - name: restart apache
     service:
       name: apache2
