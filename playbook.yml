@@ -123,7 +123,7 @@
 
   - name: update apps
     sudo_user: root
-    command: node /etc/SARAH/scripts/setup-apps.js
+    shell: node /etc/SARAH/scripts/setup-apps.js > /etc/SARAH/scripts/setup-apps.log
     tags:
       - deploy
 
