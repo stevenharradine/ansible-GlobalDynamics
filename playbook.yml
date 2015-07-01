@@ -86,6 +86,12 @@
     notify:
       - restart apache
 
+  - name: redirect docroot to /SARAH
+    lineinfile:
+      dest: /var/www/html/index.html
+      insertafter: EOF
+      line: "<script>location.href='/SARAH'</script>"
+
   - name: restart apache
     service:
       name: apache2
