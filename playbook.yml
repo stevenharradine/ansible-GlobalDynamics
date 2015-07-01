@@ -25,6 +25,7 @@
     with_items:
       - htop
       - git
+      - ansible
       - ruby-sass
       - nodejs
       - npm
@@ -131,13 +132,6 @@
     command: node /etc/SARAH/scripts/setup-apps.js
     tags:
       - deploy
-
-  - name: reader | cron
-    sudo_user: www-data
-    cron:
-      name: "Reader updater"
-      special_time: reboot
-      job: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ &&  bash run.sh"
 
   handlers:
   - name: restart apache
