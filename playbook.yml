@@ -139,12 +139,6 @@
       special_time: reboot
       job: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ &&  bash run.sh"
 
-  # - name: reader | cron
-  #   sudo_user: www-data
-  #   cron:
-  #     name: "Reader updater"
-  #     special_time: reboot
-  #     job: "cd /etc/SARAH/www/apps/SARAH-reader/updater/ &&  bash run.sh"
   handlers:
   - name: restart apache
     service:
