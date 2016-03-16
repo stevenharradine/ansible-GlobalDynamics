@@ -28,7 +28,6 @@
       - ansible
       - ruby-sass
       - nodejs
-      - npm
       - apache2
       - php5
       - mysql-server
