@@ -25,7 +25,6 @@
     with_items:
       - htop
       - git
-      - ansible
       - ruby-sass
       - nodejs
       - apache2
