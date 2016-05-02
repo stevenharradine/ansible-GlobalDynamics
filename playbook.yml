@@ -1,5 +1,5 @@
 ---
-- hosts: SARAH
+- hosts: localhost
   sudo: true
   remote_user: douglas
   vars:
@@ -28,12 +28,12 @@
       - ruby-sass
       - nodejs
       - apache2
-      - php5
+      - "php{% if ansible_distribution_major_version <= 14 %}5{% endif %}"
       - mysql-server
       - python-mysqldb
-      - php5-mysql
-      - libapache2-mod-php5
-      - php5-curl
+      - "php{% if ansible_distribution_major_version <= 14 %}5{% endif %}-mysql"
+      - "libapache2-mod-php{% if ansible_distribution_major_version <= 14 %}5{% endif %}"
+      - "php{% if ansible_distribution_major_version <= 14 %}5{% endif %}-curl"
 
   - name: install software | npm
     npm:
@@ -73,7 +73,7 @@
 
   - name: update php session timeout
     lineinfile:
-      dest: /etc/php5/apache2/php.ini
+      dest: "{% if ansible_distribution_major_version <= 14 %}/etc/php5/apache2/php.ini{% else %}/etc/php/7.0/apache2/php.ini{% endif %}"
       regexp: ^session.gc_maxlifetime
       line: session.gc_maxlifetime = 172800
     notify:
