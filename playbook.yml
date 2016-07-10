@@ -6,17 +6,13 @@
     default_database_root_password: "fargo"
     database_username: douglas
     database_password: fargo
-    hostname: SARAH
+    project: SARAH
+    ip_address: "192.168.1.{% if environment_tier=='development' %}91{% elif environment_tier=='production' %}11{% endif %}"
+  roles:
+    - role: stevenharradine.static-ip
+      static_ip_address: "{{ ip_address }}"
+    - role: stevenharradine.hostname
   tasks:
-  - name: change hostname
-    hostname:
-      name: "{{ hostname }}"
-
-  - name: update hosts
-    lineinfile:
-      dest: /etc/hosts
-      line: "127.0.1.1       {{ hostname }}"
-
   - name: install software | apt
     apt:
       pkg: "{{ item }}"
