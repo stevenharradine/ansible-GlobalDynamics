@@ -15,7 +15,6 @@
       static_ip_dryrun: dryrun | bool
     - role: stevenharradine.hostname
       hostname_dryrun: dryrun | bool
-
   tasks:
   - name: install software | apt
     apt:
