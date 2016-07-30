@@ -7,7 +7,7 @@
     database_username: douglas
     database_password: fargo
     project: SARAH
-    ip_address: "192.168.1.{% if environment_tier=='development' %}91{% elif environment_tier=='production' %}11{% endif %}"
+    ip_address: "192.168.2.{% if environment_tier=='development' %}91{% elif environment_tier=='production' %}11{% endif %}"
     dryrun: "{% if environment_tier == 'development' %}no{% else %}yes{% endif %}"
   roles:
     - role: stevenharradine.static-ip
